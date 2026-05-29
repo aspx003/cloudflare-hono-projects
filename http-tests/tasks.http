@@ -1,0 +1,108 @@
+### Base URL
+@baseUrl = http://localhost:3000
+
+########################################
+# CREATE TASK
+########################################
+
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+  "taskName": "Learn Hono",
+  "taskDetail": "Build CRUD APIs using Hono and Drizzle ORM"
+}
+
+###
+
+########################################
+# GET ALL TASKS
+########################################
+
+GET {{baseUrl}}/tasks
+
+###
+
+########################################
+# GET TASK BY ID
+########################################
+
+GET {{baseUrl}}/tasks/1
+
+###
+
+########################################
+# UPDATE TASK
+########################################
+
+PATCH {{baseUrl}}/tasks/1
+Content-Type: application/json
+
+{
+  "taskName": "Learn Hono Framework",
+  "taskDetail": "Practice CRUD operations with SQLite"
+}
+
+###
+
+########################################
+# PARTIAL UPDATE TASK
+########################################
+
+PATCH {{baseUrl}}/tasks/1
+Content-Type: application/json
+
+{
+  "taskName": "Updated Task Name Only"
+}
+
+###
+
+########################################
+# MARK TASK AS COMPLETE
+########################################
+
+PATCH {{baseUrl}}/tasks/1/complete
+
+###
+
+########################################
+# DELETE TASK
+########################################
+
+DELETE {{baseUrl}}/tasks/1
+
+###
+
+########################################
+# TEST INVALID TASK ID
+########################################
+
+GET {{baseUrl}}/tasks/9999
+
+###
+
+########################################
+# TEST CREATE VALIDATION ERROR
+########################################
+
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+  "taskName": 123,
+  "taskDetail": true
+}
+
+###
+
+########################################
+# TEST UPDATE VALIDATION ERROR
+########################################
+
+PATCH {{baseUrl}}/tasks/1
+Content-Type: application/json
+
+{
+  "taskName": 12345
+}
