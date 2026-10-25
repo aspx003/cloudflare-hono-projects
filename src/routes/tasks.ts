@@ -40,7 +40,10 @@ app.post("/", zValidator("json", CreateTaskSchema), async (c) => {
 });
 
 app.get("/", async (c) => {
-	const tasks = await db.select().from(tasksTable);
+	const tasks = await db.select({
+		taskName: tasksTable.taskName,
+		isCompleted: tasksTable.isCompleted,
+	}).from(tasksTable);
 
 	return c.json({ tasks });
 });
@@ -50,28 +53,6 @@ app.get("/:id", async (c) => {
 
 	try {
 		const task = await getTask(parseInt(id));
-
-		return c.json({ task });
-	} catch (error) {
-		return c.json({ message: "Task not found" }, 404);
-	}
-});
-
-const UpdateTaskSchema = z.object({
-	taskName: z.string().optional(),
-	taskDetail: z.string().optional(),
-});
-
-app.patch("/:id", zValidator("json", UpdateTaskSchema), async (c) => {
-	const { id } = c.req.param();
-	const body = c.req.valid("json");
-
-	try {
-		const task = await getTask(parseInt(id));
-		await db
-			.update(tasksTable)
-			.set(body)
-			.where(eq(tasksTable.id, parseInt(id)));
 
 		return c.json({ task });
 	} catch (error) {
