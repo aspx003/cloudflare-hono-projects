@@ -64,10 +64,15 @@ app.delete("/:id", async (c) => {
 	const { id } = c.req.param();
 
 	try {
-		await getTask(parseInt(id));
+		const task = await getTask(parseInt(id));
+
+		if (!task) {
+			c.json({ message: "Task not found!" });
+		}
+
 		await db.delete(tasksTable).where(eq(tasksTable.id, parseInt(id)));
 
-		return c.json({ message: "Task deleted successfully" });
+		return c.json({ message: "Task deleted successfully", deletedId: task.id });
 	} catch (error) {
 		return c.json({ message: "Task not found" }, 404);
 	}
